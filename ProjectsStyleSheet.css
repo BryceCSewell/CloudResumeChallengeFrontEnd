@@ -1,0 +1,28 @@
+body {
+    background: black;
+  }
+
+.header {
+    padding: 10px;
+    text-align: center;
+    letter-spacing: 3px;
+    color: whitesmoke;
+  }
+
+.navigation {
+  padding: 10px;
+  text-align: center;
+  word-spacing: 300px;
+  letter-spacing: 3px;
+  }
+
+a {
+  color: whitesmoke;
+  font-family: "Impact", fantasy;
+  text-decoration: none;
+  font-size: 25px;
+  }
+
+a:hover {
+  opacity: 50%;
+  }
