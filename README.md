@@ -1,2 +1,2 @@
-# cloudresumechallenge
-Files for my cloud resume hosted on AWS
+# Cloud Resume Challenge Front End
+Frontend files for my cloud resume challenge hosted on AWS
