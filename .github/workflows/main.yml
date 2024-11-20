@@ -26,7 +26,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::501525630603:role/FrontEndCICD
+          role-to-assume: ${{ secrets.CICD_ROLE_ARN }}
           role-session-name: github-cd
           aws-region: us-west-1
 
