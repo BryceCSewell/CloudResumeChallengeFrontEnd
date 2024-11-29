@@ -12,6 +12,8 @@ body {
 }
 
 .header {
+  margin-left: 100px;
+  margin-right: 400px;
   font-weight: bold;
   color: whitesmoke;
   font-size: 18px;
