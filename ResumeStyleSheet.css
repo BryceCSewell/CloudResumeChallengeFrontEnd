@@ -3,6 +3,15 @@ body {
   overflow: hidden;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 h2 {
   font-size: 20px;
   color: whitesmoke;

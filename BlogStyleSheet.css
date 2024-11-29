@@ -2,9 +2,17 @@ body {
   background-color: black;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .header {
   margin-left: 100px;
-  margin-right: 400px;
   font-weight: bold;
   color: whitesmoke;
   font-size: 18px;
@@ -12,6 +20,8 @@ body {
 }
 
 .body {
+  margin-left: 100px;
+  margin-right: 100px;
   color: whitesmoke;
   font-size: 16px;
   font-family: Verdana, sans-serif;
