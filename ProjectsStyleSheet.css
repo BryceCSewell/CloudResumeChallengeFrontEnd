@@ -3,15 +3,6 @@ body {
   overflow: hidden;
 }
 
-.example::-webkit-scrollbar {
-  display: none;
-}
-  
-.example {
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
-}
-
 .header {
   padding: 10px;
   text-align: center;

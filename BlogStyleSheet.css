@@ -2,15 +2,6 @@ body {
   background-color: black;
 }
 
-.example::-webkit-scrollbar {
-  display: none;
-}
-  
-.example {
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
-}
-
 .header {
   margin-left: 100px;
   margin-right: 400px;
