@@ -1,28 +1,36 @@
 body {
-    background: black;
-  }
+  background: black;
+  padding-left: 100px;
+  padding-right: 100px;
+}
 
 .header {
-    padding: 10px;
-    text-align: center;
-    letter-spacing: 3px;
-    color: whitesmoke;
-  }
+  font-weight: bold;
+  color: whitesmoke;
+  font-size: 18px;
+  font-family: Verdana, sans-serif;
+}
+
+.body {
+  color: whitesmoke;
+  font-size: 16px;
+  font-family: Verdana, sans-serif;
+}
 
 .navigation {
   padding: 10px;
   text-align: center;
   word-spacing: 300px;
   letter-spacing: 3px;
-  }
+}
 
 a {
   color: whitesmoke;
   font-family: "Impact", fantasy;
   text-decoration: none;
   font-size: 25px;
-  }
+}
 
 a:hover {
   opacity: 50%;
-  }
+}
