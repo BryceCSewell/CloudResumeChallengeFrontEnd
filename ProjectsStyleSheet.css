@@ -1,6 +1,14 @@
 body {
   background-color: black;
-  overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .header {
