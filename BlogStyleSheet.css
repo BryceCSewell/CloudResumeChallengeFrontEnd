@@ -34,11 +34,16 @@ body::-webkit-scrollbar {
   letter-spacing: 3px;
 }
 
-a {
+.nlink {
   color: whitesmoke;
   font-family: "Impact", fantasy;
   text-decoration: none;
   font-size: 25px;
+}
+
+.blink {
+  color: whitesmoke;
+  font-weight: bold;
 }
 
 a:hover {
