@@ -1,0 +1,150 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cloud-resume-challenge
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+
+  MyWebsite:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: Private
+      WebsiteConfiguration:
+        IndexDocument: Home.html
+      BucketName: bsewell-resume-website
+
+  BucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      PolicyDocument:
+        Id: WebPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: GetObjectForS3
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+            Action: "s3:GetObject"
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref MyWebsite
+                - /*
+      Bucket: !Ref MyWebsite
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: "Serverless website in S3"
+
+  MyRoute53Record:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId: Z03879012SD2042NGLM7R
+      RecordSets:
+        - Name: brycesewellresume.click
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z03879012SD2042NGLM7R
+            DNSName: !GetAtt MyDistribution.DomainName
+        - Name: brycesewellresume.click
+          Type: AAAA
+          AliasTarget:
+            HostedZoneId: Z03879012SD2042NGLM7R
+            DNSName: !GetAtt MyDistribution.DomainName
+
+  MyDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:<<ACCOUNT_NR>>:certificate/<<CERT_NR>>
+          SslSupportMethod: sni-only
+        Aliases:
+          - myprofile.cloudofthings.link
+        DefaultCacheBehavior:
+          Compress: 'true'
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: s3-website
+          DefaultTTL: 30
+          MinTTL: 1
+          MaxTTL: 86400
+          ForwardedValues:
+            QueryString: false
+        PriceClass: PriceClass_100
+        Origins:
+          - DomainName: !GetAtt MyWebsite.DomainName
+            Id: s3-website
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Sub: 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+        Enabled: "true"
+        DefaultRootObject: Home.html
+        HttpVersion: http2
+
+  GetCountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: cloud-resume-stats
+      CodeUri: get-function/
+      Handler: app.lambda_function
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api 
+          Properties:
+            Path: /get
+            Method: get
+
+  PutCountFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: cloud-resume-stats
+      CodeUri: put-function/
+      Handler: app.lambda_function
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /put
+            Method: get
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: cloud-resume-stats
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: "ID"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "ID"
+          KeyType: "HASH"
+
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for GetCountFunction function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/hello/"
+  GetCountFunction:
+    Description: "incrementViewCount Lambda Function ARN"
+    Value: !GetAtt GetCountFunction.Arn
+  GetCountFunctionIamRole:
+    Description: "Implicit IAM Role created for incrementViewCount"
+    Value: !GetAtt GetCountFunctionRole.Arn
+  MyDistribution:
+    Description: "CloudFront distribution domain name"
+    Value: !GetAtt MyDistribution.DomainName
