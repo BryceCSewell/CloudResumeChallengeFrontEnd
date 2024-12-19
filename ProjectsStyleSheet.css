@@ -47,6 +47,12 @@ a {
   font-size: 25px;
 }
 
+.slink {
+  color: whitesmoke;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
 span {
   color: whitesmoke;
   font-size: 20px;
